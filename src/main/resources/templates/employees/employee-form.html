@@ -11,6 +11,12 @@
           integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
 
     <title>Save Employee</title>
+
+    <style>
+        .error {
+            color: red
+        }
+    </style>
 </head>
 
 <body>
@@ -21,20 +27,31 @@
 
     <p class="h4 mb-4">Save Employee</p>
 
-    <form action="#" th:action="@{/employees/save}"
-                     th:object="${employee}" method="POST">
+    <form th:action="@{/employees/save}" th:object="${employee}" method="POST">
 
 
         <!-- Add hidden form field to handle the update -->
 
         <input type="hidden" th:field="*{id}">
 
+        <!-- Add error message (if present) -->
+        <span th:if="${#fields.hasErrors('firstName')}"
+              th:errors="*{firstName}"
+              class="error"></span>
         <input type="text" th:field="*{firstName}"
                 class="form-control mb-4 w-25" placeholder="First Name">
 
+        <!-- Add error message (if present) -->
+        <span th:if="${#fields.hasErrors('lastName')}"
+              th:errors="*{lastName}"
+              class="error"></span>
         <input type="text" th:field="*{lastName}"
-               class="form-control mb-4 w-25" placeholder="Last Name">
+               class="form-control mb-4 w-25" placeholder="Last Name (*)">
 
+        <!-- Add error message (if present) -->
+        <span th:if="${#fields.hasErrors('email')}"
+              th:errors="*{email}"
+              class="error"></span>
         <input type="text" th:field="*{email}"
                class="form-control mb-4 w-25" placeholder="Email">
 

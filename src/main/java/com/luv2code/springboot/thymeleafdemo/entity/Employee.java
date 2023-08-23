@@ -6,6 +6,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="employee")
@@ -19,18 +22,24 @@ public class Employee {
 	private int id;
 	
 	@Column(name="first_name")
+	@NotNull(message = "is required")
+	@Size(min=2, message="min length is 2")
 	private String firstName;
 	
 	@Column(name="last_name")
+	@NotNull(message = "is required")
+	@Size(min=2, message="min length is 2")
 	private String lastName;
-	
+
 	@Column(name="email")
+	@NotNull(message = "is required")
+	@Pattern(regexp = "^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$", message = "incorrect email")	//Regex get from internet
 	private String email;
 	
 		
 	// define constructors
 	
-	public Employee() {
+	public Employee() {//	Empty constructor is defined by default, only if no constructor defined, needed in Controller
 		
 	}
 	

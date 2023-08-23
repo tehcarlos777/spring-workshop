@@ -2,8 +2,12 @@ package com.luv2code.springboot.thymeleafdemo.controller;
 
 import com.luv2code.springboot.thymeleafdemo.entity.Employee;
 import com.luv2code.springboot.thymeleafdemo.service.EmployeeService;
+import jakarta.validation.Valid;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,6 +15,14 @@ import java.util.List;
 @Controller
 @RequestMapping("/employees")
 public class EmployeeController {
+	//	add an initbinder ... to convert trim input strings
+	//	remove leading and trailing whitespace
+	//	resolve issue for our validation
+	@InitBinder
+	public void initBinder(WebDataBinder dataBinder) {
+		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+	}
 
 	private EmployeeService employeeService;
 
@@ -53,13 +65,16 @@ public class EmployeeController {
 	}
 
 	@PostMapping("/save")
-	public String saveEmployee(@ModelAttribute("employee") Employee theEmployee) {
-
-		// save
-		employeeService.save(theEmployee);
-
-		//	use a redirect to prevent duplicated submissions
-		return "redirect:/employees/list";
+	public String saveEmployee(@Valid @ModelAttribute("employee") Employee theEmployee,
+							   BindingResult theBindingResult) {
+		System.out.println("Last name: |"+theEmployee.getLastName()+"|");
+		if (theBindingResult.hasErrors()) {
+			return "employees/employee-form";
+		} else {
+			// save
+			employeeService.save(theEmployee);
+			return "redirect:/employees/list";
+		}
 	}
 
 	@GetMapping("/delete")
