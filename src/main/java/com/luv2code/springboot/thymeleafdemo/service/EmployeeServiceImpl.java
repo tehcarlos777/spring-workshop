@@ -14,7 +14,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	private EmployeeRepository employeeRepository;
 	
-	@Autowired
+	@Autowired	//	Autowired automatically injects an instance of EmployeeRepository1
 	public EmployeeServiceImpl(EmployeeRepository theEmployeeRepository) {
 		employeeRepository = theEmployeeRepository;
 	}
