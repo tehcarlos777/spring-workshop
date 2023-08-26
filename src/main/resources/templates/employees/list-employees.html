@@ -14,6 +14,13 @@
 
 <body>
 
+<!--Logout button-->
+<!--Musi być jako form, bo logout musi być wysłany POSTem.-->
+<form th:action="@{/logout}" method="POST"
+	  class="btn btn-primary btn-sm mb-3">
+	<input type="submit" value="Logout"></input>
+</form>
+
 <div class="container">
 
 	<h3>Employee Directory</h3>
